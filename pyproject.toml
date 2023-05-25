@@ -4,6 +4,9 @@ version = "0.1.0a0"
 description = ""
 authors = ["Brian Schubert <brianm.schubert@gmail.com>"]
 readme = "README.md"
+packages = [
+    { include = "colorexpansi", from = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
