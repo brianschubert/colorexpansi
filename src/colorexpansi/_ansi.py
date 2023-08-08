@@ -11,6 +11,7 @@ References
 import abc
 import enum
 import itertools
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import ClassVar, Final, Literal
 
@@ -64,8 +65,8 @@ class SGRControlSequence(abc.ABC):
     """Base class for ANSI Set Graphic Rendition escape sequences."""
 
     @abc.abstractmethod
-    def arguments(self) -> list[str]:
-        """Return the argument list for this SGR escape sequence."""
+    def arguments(self) -> Iterable[str]:
+        """Return the arguments for this SGR escape sequence."""
 
     def as_str(self) -> str:
         body = SGR_DELIMITER.join(self.arguments())
@@ -82,18 +83,16 @@ class SGRControlSequence(abc.ABC):
 class ConcatenatedSequence(SGRControlSequence):
     parts: list[SGRControlSequence]
 
-    def arguments(self) -> list[str]:
-        return list(
-            itertools.chain.from_iterable(seq.arguments() for seq in self.parts)
-        )
+    def arguments(self) -> Iterable[str]:
+        return itertools.chain.from_iterable(seq.arguments() for seq in self.parts)
 
 
 @dataclass
 class GraphicsModeControlSequence(SGRControlSequence):
     mode: GraphicsMode
 
-    def arguments(self) -> list[str]:
-        return [str(self.mode.value)]
+    def arguments(self) -> Iterable[str]:
+        return (str(self.mode.value),)
 
 
 @dataclass
@@ -116,8 +115,8 @@ class Color16ControlSequence(SGRControlSequence):
 
         return self.OFFSET_MAP[(self.bright, region)]
 
-    def arguments(self) -> list[str]:
-        return [str(self._argument_offset() + self.color.value)]
+    def arguments(self) -> Iterable[str]:
+        return (str(self._argument_offset() + self.color.value),)
 
 
 @dataclass
@@ -125,12 +124,12 @@ class Color256ControlSequence(SGRControlSequence):
     color_id: Int8
     region: Region = "foreground"
 
-    def arguments(self) -> list[str]:
+    def arguments(self) -> Iterable[str]:
         if self.region == "foreground":
             prefix = "38"
         else:
             prefix = "48"
-        return [prefix, "5", str(self.color_id)]
+        return (prefix, "5", str(self.color_id))
 
 
 @dataclass
@@ -140,9 +139,9 @@ class ColorRGBControlSequence(SGRControlSequence):
     green: Int8
     region: Region = "foreground"
 
-    def arguments(self) -> list[str]:
+    def arguments(self) -> Iterable[str]:
         if self.region == "foreground":
             prefix = "38"
         else:
             prefix = "48"
-        return [prefix, "2", str(self.red), str(self.blue), str(self.green)]
+        return (prefix, "2", str(self.red), str(self.blue), str(self.green))
