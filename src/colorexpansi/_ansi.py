@@ -33,7 +33,7 @@ SGR_TERMINATOR: Final[str] = "m"
 @enum.unique
 class GraphicsMode(enum.IntEnum):
     BOLD = 1
-    DIM = 2
+    FAINT = 2
     ITALIC = 3
     UNDERLINE = 4
     BLINK = 5

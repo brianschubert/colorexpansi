@@ -21,7 +21,7 @@ _COLOR_IDENTS: Final[dict[str, ansi.StandardColor]] = {
 
 _MODE_IDENTS: Final[dict[str, ansi.GraphicsMode]] = {
     "b": ansi.GraphicsMode.BOLD,
-    "f": ansi.GraphicsMode.DIM,
+    "f": ansi.GraphicsMode.FAINT,
     "i": ansi.GraphicsMode.ITALIC,
     "u": ansi.GraphicsMode.UNDERLINE,
     "k": ansi.GraphicsMode.BLINK,
