@@ -12,7 +12,7 @@ import abc
 import enum
 import itertools
 from dataclasses import dataclass
-from typing import Final
+from typing import ClassVar, Final, Literal
 
 CONTROL_SEQUENCE_INTRODUCER: Final[str] = "\N{ESC}"
 
@@ -39,6 +39,19 @@ class GraphicsMode(enum.IntEnum):
     RESET_REVERSE = 27
     RESET_HIDDEN = 28
     RESET_STRIKE = 29
+
+
+@enum.unique
+class StandardColor(enum.IntEnum):
+    BLACK = 0
+    RED = 1
+    GREEN = 2
+    YELLOW = 3
+    BLUE = 4
+    MAGENTA = 5
+    CYAN = 6
+    WHITE = 7
+    DEFAULT = 9
 
 
 class SGRControlSequence(abc.ABC):
@@ -75,3 +88,29 @@ class GraphicsModeControlSequence(SGRControlSequence):
 
     def arguments(self) -> list[str]:
         return [str(self.mode.value)]
+
+
+@dataclass
+class Color16ControlSequence(SGRControlSequence):
+    color: StandardColor
+    bright: bool = False
+    which: Literal["foreground", "background"] = "foreground"
+
+    OFFSET_MAP: ClassVar[
+        dict[tuple[bool, Literal["foreground", "background"]], int]
+    ] = {
+        (False, "foreground"): 30,
+        (False, "background"): 40,
+        (True, "foreground"): 90,
+        (True, "background"): 100,
+    }
+
+    def _argument_offset(self) -> int:
+        which = self.which
+        if self.color == StandardColor.DEFAULT:
+            which = "foreground"
+
+        return self.OFFSET_MAP[(self.bright, which)]
+
+    def arguments(self) -> list[str]:
+        return [str(self._argument_offset() + self.color.value)]
