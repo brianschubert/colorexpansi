@@ -18,6 +18,8 @@ from typing_extensions import TypeAlias
 
 Region: TypeAlias = Literal["foreground", "background"]
 
+Int8: TypeAlias = int
+
 CONTROL_SEQUENCE_INTRODUCER: Final[str] = "\N{ESC}"
 
 SGR_DELIMITER: Final[str] = ";"
@@ -120,7 +122,7 @@ class Color16ControlSequence(SGRControlSequence):
 
 @dataclass
 class Color256ControlSequence(SGRControlSequence):
-    color_id: int
+    color_id: Int8
     region: Region = "foreground"
 
     def arguments(self) -> list[str]:
@@ -129,3 +131,18 @@ class Color256ControlSequence(SGRControlSequence):
         else:
             prefix = "48"
         return [prefix, "5", str(self.color_id)]
+
+
+@dataclass
+class ColorRGBControlSequence(SGRControlSequence):
+    red: Int8
+    blue: Int8
+    green: Int8
+    region: Region = "foreground"
+
+    def arguments(self) -> list[str]:
+        if self.region == "foreground":
+            prefix = "38"
+        else:
+            prefix = "48"
+        return [prefix, "2", str(self.red), str(self.blue), str(self.green)]
