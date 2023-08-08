@@ -32,8 +32,6 @@ SGR_TERMINATOR: Final[str] = "m"
 
 @enum.unique
 class GraphicsMode(enum.IntEnum):
-    RESET = 0
-
     SET_BOLD = 1
     SET_DIM = 2
     SET_ITALIC = 3
@@ -80,6 +78,12 @@ class SGRControlSequence(abc.ABC):
 
     def __bytes__(self) -> bytes:
         return self.as_str().encode("ascii")
+
+
+@dataclass
+class ResetControlSequence(SGRControlSequence):
+    def arguments(self) -> tuple[str]:
+        return ("0",)
 
 
 @dataclass
