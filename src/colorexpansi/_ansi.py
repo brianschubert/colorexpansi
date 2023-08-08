@@ -21,23 +21,24 @@ SGR_DELIMITER: Final[str] = ";"
 SGR_TERMINATOR: Final[str] = "m"
 
 
-class GraphicsMode(enum.Enum):
-    RESET = "0"
-    SET_BOLD = "1"
-    SET_DIM = "2"
-    SET_ITALIC = "3"
-    SET_UNDERLINE = "4"
-    SET_BLINK = "5"
-    SET_REVERSE = "7"
-    SET_HIDDEN = "8"
-    SET_STRIKE = "9"
-    RESET_BOLD_DIM = "22"
-    RESET_ITALIC = "23"
-    RESET_UNDERLINE = "24"
-    RESET_BLINK = "25"
-    RESET_REVERSE = "27"
-    RESET_HIDDEN = "28"
-    RESET_STRIKE = "29"
+@enum.unique
+class GraphicsMode(enum.IntEnum):
+    RESET = 0
+    SET_BOLD = 1
+    SET_DIM = 2
+    SET_ITALIC = 3
+    SET_UNDERLINE = 4
+    SET_BLINK = 5
+    SET_REVERSE = 7
+    SET_HIDDEN = 8
+    SET_STRIKE = 9
+    RESET_BOLD_DIM = 22
+    RESET_ITALIC = 23
+    RESET_UNDERLINE = 24
+    RESET_BLINK = 25
+    RESET_REVERSE = 27
+    RESET_HIDDEN = 28
+    RESET_STRIKE = 29
 
 
 class SGRControlSequence(abc.ABC):
@@ -73,4 +74,4 @@ class GraphicsModeControlSequence(SGRControlSequence):
     mode: GraphicsMode
 
     def arguments(self) -> list[str]:
-        return [self.mode.value]
+        return [str(self.mode.value)]
