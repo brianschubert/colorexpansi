@@ -8,6 +8,8 @@ References
 2. https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 
 """
+from __future__ import annotations
+
 import abc
 import enum
 import itertools
@@ -49,9 +51,6 @@ class GraphicsMode(enum.IntEnum):
     RESET_HIDDEN = 28
     RESET_STRIKE = 29
 
-    RESET_FOREGROUND = 39
-    RESET_BACKGROUND = 49
-
 
 @enum.unique
 class StandardColor(enum.IntEnum):
@@ -89,6 +88,17 @@ class ConcatenatedSequence(SGRControlSequence):
 
     def arguments(self) -> Iterable[str]:
         return itertools.chain.from_iterable(seq.arguments() for seq in self.parts)
+
+
+@dataclass
+class ColorDefaultControlSequence(SGRControlSequence):
+    region: Region = "foreground"
+
+    def arguments(self) -> tuple[str]:
+        if self.region == "foreground":
+            return ("39",)
+        else:
+            return ("49",)
 
 
 @dataclass
