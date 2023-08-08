@@ -98,7 +98,7 @@ class GraphicsModeControlSequence(SGRControlSequence):
 class Color16ControlSequence(SGRControlSequence):
     color: StandardColor
     bright: bool = False
-    which: Region = "foreground"
+    region: Region = "foreground"
 
     OFFSET_MAP: ClassVar[dict[tuple[bool, Region], int]] = {
         (False, "foreground"): 30,
@@ -108,11 +108,24 @@ class Color16ControlSequence(SGRControlSequence):
     }
 
     def _argument_offset(self) -> int:
-        which = self.which
+        region = self.region
         if self.color == StandardColor.DEFAULT:
-            which = "foreground"
+            region = "foreground"
 
-        return self.OFFSET_MAP[(self.bright, which)]
+        return self.OFFSET_MAP[(self.bright, region)]
 
     def arguments(self) -> list[str]:
         return [str(self._argument_offset() + self.color.value)]
+
+
+@dataclass
+class Color256ControlSequence(SGRControlSequence):
+    color_id: int
+    region: Region = "foreground"
+
+    def arguments(self) -> list[str]:
+        if self.region == "foreground":
+            prefix = "38"
+        else:
+            prefix = "48"
+        return [prefix, "5", str(self.color_id)]
