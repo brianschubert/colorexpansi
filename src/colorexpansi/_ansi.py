@@ -32,22 +32,14 @@ SGR_TERMINATOR: Final[str] = "m"
 
 @enum.unique
 class GraphicsMode(enum.IntEnum):
-    SET_BOLD = 1
-    SET_DIM = 2
-    SET_ITALIC = 3
-    SET_UNDERLINE = 4
-    SET_BLINK = 5
-    SET_REVERSE = 7
-    SET_HIDDEN = 8
-    SET_STRIKE = 9
-
-    RESET_BOLD_DIM = 22
-    RESET_ITALIC = 23
-    RESET_UNDERLINE = 24
-    RESET_BLINK = 25
-    RESET_REVERSE = 27
-    RESET_HIDDEN = 28
-    RESET_STRIKE = 29
+    BOLD = 1
+    DIM = 2
+    ITALIC = 3
+    UNDERLINE = 4
+    BLINK = 5
+    REVERSE = 7
+    HIDDEN = 8
+    STRIKE = 9
 
 
 @enum.unique
@@ -108,9 +100,20 @@ class ColorDefaultControlSequence(SGRControlSequence):
 @dataclass
 class GraphicsModeControlSequence(SGRControlSequence):
     mode: GraphicsMode
+    set: bool
 
     def arguments(self) -> tuple[str]:
-        return (str(self.mode.value),)
+        value = self.mode.value
+
+        if not self.set:
+            # Convert set mode argument to reset mode argument.
+            value += 20
+
+            # Special case - BOLD is reset by 22 instead of 21
+            if value == 21:
+                value = 22
+
+        return (str(value),)
 
 
 @dataclass
