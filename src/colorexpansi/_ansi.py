@@ -14,6 +14,10 @@ import itertools
 from dataclasses import dataclass
 from typing import ClassVar, Final, Literal
 
+from typing_extensions import TypeAlias
+
+Region: TypeAlias = Literal["foreground", "background"]
+
 CONTROL_SEQUENCE_INTRODUCER: Final[str] = "\N{ESC}"
 
 SGR_DELIMITER: Final[str] = ";"
@@ -94,11 +98,9 @@ class GraphicsModeControlSequence(SGRControlSequence):
 class Color16ControlSequence(SGRControlSequence):
     color: StandardColor
     bright: bool = False
-    which: Literal["foreground", "background"] = "foreground"
+    which: Region = "foreground"
 
-    OFFSET_MAP: ClassVar[
-        dict[tuple[bool, Literal["foreground", "background"]], int]
-    ] = {
+    OFFSET_MAP: ClassVar[dict[tuple[bool, Region], int]] = {
         (False, "foreground"): 30,
         (False, "background"): 40,
         (True, "foreground"): 90,
