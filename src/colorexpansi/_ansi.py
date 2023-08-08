@@ -31,6 +31,7 @@ SGR_TERMINATOR: Final[str] = "m"
 @enum.unique
 class GraphicsMode(enum.IntEnum):
     RESET = 0
+
     SET_BOLD = 1
     SET_DIM = 2
     SET_ITALIC = 3
@@ -39,6 +40,7 @@ class GraphicsMode(enum.IntEnum):
     SET_REVERSE = 7
     SET_HIDDEN = 8
     SET_STRIKE = 9
+
     RESET_BOLD_DIM = 22
     RESET_ITALIC = 23
     RESET_UNDERLINE = 24
@@ -46,6 +48,9 @@ class GraphicsMode(enum.IntEnum):
     RESET_REVERSE = 27
     RESET_HIDDEN = 28
     RESET_STRIKE = 29
+
+    RESET_FOREGROUND = 39
+    RESET_BACKGROUND = 49
 
 
 @enum.unique
@@ -58,7 +63,6 @@ class StandardColor(enum.IntEnum):
     MAGENTA = 5
     CYAN = 6
     WHITE = 7
-    DEFAULT = 9
 
 
 class SGRControlSequence(abc.ABC):
@@ -109,11 +113,7 @@ class Color16ControlSequence(SGRControlSequence):
     }
 
     def _argument_offset(self) -> int:
-        region = self.region
-        if self.color == StandardColor.DEFAULT:
-            region = "foreground"
-
-        return self.OFFSET_MAP[(self.bright, region)]
+        return self.OFFSET_MAP[(self.bright, self.region)]
 
     def arguments(self) -> tuple[str]:
         return (str(self._argument_offset() + self.color.value),)
