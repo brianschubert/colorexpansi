@@ -100,7 +100,7 @@ class ColorDefaultControlSequence(SGRControlSequence):
 @dataclass
 class GraphicsModeControlSequence(SGRControlSequence):
     mode: GraphicsMode
-    set: bool
+    set: bool = True
 
     def arguments(self) -> tuple[str]:
         value = self.mode.value
