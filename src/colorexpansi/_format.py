@@ -1,8 +1,14 @@
 """
 String formatting.
 """
+
 import string
-from typing import Any
+from typing import Any, Final
+
+from ._ansi import ResetControlSequence
+from ._spec import parse_control
+
+_RESET_SEQ: Final[str] = ResetControlSequence().as_str()
 
 
 class ColorFormatter(string.Formatter):
@@ -14,4 +20,11 @@ class ColorFormatter(string.Formatter):
     def format_field(self, value: Any, format_spec: str) -> str:
         value_spec, _sep, color_spec = format_spec.partition(self.spec_separator)
 
-        return super().format_field(value, value_spec)
+        formatted_value = super().format_field(value, value_spec)
+
+        if not color_spec:
+            return formatted_value
+
+        style_cs = parse_control(color_spec)
+
+        return f"{style_cs}{formatted_value}{_RESET_SEQ}"
