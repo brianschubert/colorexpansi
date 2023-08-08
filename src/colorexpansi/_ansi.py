@@ -91,7 +91,7 @@ class ConcatenatedSequence(SGRControlSequence):
 class GraphicsModeControlSequence(SGRControlSequence):
     mode: GraphicsMode
 
-    def arguments(self) -> Iterable[str]:
+    def arguments(self) -> tuple[str]:
         return (str(self.mode.value),)
 
 
@@ -115,7 +115,7 @@ class Color16ControlSequence(SGRControlSequence):
 
         return self.OFFSET_MAP[(self.bright, region)]
 
-    def arguments(self) -> Iterable[str]:
+    def arguments(self) -> tuple[str]:
         return (str(self._argument_offset() + self.color.value),)
 
 
@@ -124,12 +124,12 @@ class Color256ControlSequence(SGRControlSequence):
     color_id: Int8
     region: Region = "foreground"
 
-    def arguments(self) -> Iterable[str]:
+    def arguments(self) -> tuple[str, str, str]:
         if self.region == "foreground":
             prefix = "38"
         else:
             prefix = "48"
-        return (prefix, "5", str(self.color_id))
+        return prefix, "5", str(self.color_id)
 
 
 @dataclass
@@ -139,9 +139,9 @@ class ColorRGBControlSequence(SGRControlSequence):
     green: Int8
     region: Region = "foreground"
 
-    def arguments(self) -> Iterable[str]:
+    def arguments(self) -> tuple[str, str, str, str, str]:
         if self.region == "foreground":
             prefix = "38"
         else:
             prefix = "48"
-        return (prefix, "2", str(self.red), str(self.blue), str(self.green))
+        return prefix, "2", str(self.red), str(self.blue), str(self.green)
