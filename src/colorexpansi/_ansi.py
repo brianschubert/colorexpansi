@@ -23,7 +23,7 @@ Region: TypeAlias = Literal["foreground", "background"]
 
 Int8: TypeAlias = int
 
-CONTROL_SEQUENCE_INTRODUCER: Final[str] = "\N{ESC}"
+CONTROL_SEQUENCE_INTRODUCER: Final[str] = "\N{ESC}["
 
 SGR_DELIMITER: Final[str] = ";"
 
