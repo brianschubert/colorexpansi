@@ -99,8 +99,8 @@ class GraphicsModeControlSequence(SGRControlSequence):
 @dataclass
 class Color16ControlSequence(SGRControlSequence):
     color: StandardColor
-    bright: bool = False
     region: Region = "foreground"
+    bright: bool = False
 
     OFFSET_MAP: ClassVar[dict[tuple[bool, Region], int]] = {
         (False, "foreground"): 30,
