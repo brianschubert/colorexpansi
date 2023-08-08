@@ -30,9 +30,9 @@ _MODE_IDENTS: Final[dict[str, GraphicsMode]] = {
     "s": GraphicsMode.STRIKE,
 }
 
-_COLOR_SPECIFIER: Final[str] = f"[{''.join(_COLOR_IDENTS.keys())}]"
+_COLOR_SPECIFIER: Final[str] = f"[{''.join(_COLOR_IDENTS.keys())}]+"
 
-_MODE_SPECIFIER: Final[str] = f"[{''.join(_MODE_IDENTS.keys())}]"
+_MODE_SPECIFIER: Final[str] = f"[{''.join(_MODE_IDENTS.keys())}]+"
 
 _SPECIFICATION_GRAMMAR: Final[re.Pattern] = re.compile(
     rf"""
