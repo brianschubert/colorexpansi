@@ -18,11 +18,10 @@ class ANSILogFormatter(logging.Formatter):
         self,
         fmt: str | None = None,
         datefmt: str | None = None,
-        style: Literal["%", "$", "{"] = "%",
         validate: bool = True,
         formatter: ANSIStringFormatter = ANSIStringFormatter(),
     ) -> None:
-        super().__init__(fmt, datefmt, style, validate)
+        super().__init__(fmt, datefmt, "{", validate)
         self._formatter = formatter
 
     def formatMessage(self, record: logging.LogRecord) -> str:
