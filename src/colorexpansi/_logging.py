@@ -4,7 +4,6 @@ Logging extensions.
 from __future__ import annotations
 
 import logging
-from typing import Literal
 
 from ._format import ANSIStringFormatter
 
