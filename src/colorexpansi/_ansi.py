@@ -73,13 +73,13 @@ class SGRControlSequence(abc.ABC):
 
 
 @dataclass
-class ResetControlSequence(SGRControlSequence):
+class ResetCS(SGRControlSequence):
     def arguments(self) -> tuple[str]:
         return ("0",)
 
 
 @dataclass
-class ConcatenatedSequence(SGRControlSequence):
+class ConcatenatedCS(SGRControlSequence):
     parts: list[SGRControlSequence]
 
     def arguments(self) -> Iterable[str]:
@@ -87,7 +87,7 @@ class ConcatenatedSequence(SGRControlSequence):
 
 
 @dataclass
-class ColorDefaultControlSequence(SGRControlSequence):
+class ColorDefaultCS(SGRControlSequence):
     region: Region = "foreground"
 
     def arguments(self) -> tuple[str]:
@@ -98,7 +98,7 @@ class ColorDefaultControlSequence(SGRControlSequence):
 
 
 @dataclass
-class GraphicsModeControlSequence(SGRControlSequence):
+class GraphicsModeCS(SGRControlSequence):
     mode: GraphicsMode
     set: bool = True
 
@@ -117,7 +117,7 @@ class GraphicsModeControlSequence(SGRControlSequence):
 
 
 @dataclass
-class Color16ControlSequence(SGRControlSequence):
+class Color16CS(SGRControlSequence):
     color: StandardColor
     region: Region = "foreground"
     bright: bool = False
@@ -137,7 +137,7 @@ class Color16ControlSequence(SGRControlSequence):
 
 
 @dataclass
-class Color256ControlSequence(SGRControlSequence):
+class Color256CS(SGRControlSequence):
     color_id: Int8
     region: Region = "foreground"
 
@@ -150,7 +150,7 @@ class Color256ControlSequence(SGRControlSequence):
 
 
 @dataclass
-class ColorRGBControlSequence(SGRControlSequence):
+class ColorRGBCS(SGRControlSequence):
     red: Int8
     blue: Int8
     green: Int8

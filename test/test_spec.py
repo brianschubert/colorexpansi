@@ -6,71 +6,45 @@ def test_parser() -> None:
     cases = [
         (
             "r",
-            ansi.ConcatenatedSequence(
-                [ansi.Color16ControlSequence(ansi.StandardColor.RED)]
-            ),
+            ansi.ConcatenatedCS([ansi.Color16CS(ansi.StandardColor.RED)]),
         ),
         (
             "r.g",
-            ansi.ConcatenatedSequence(
+            ansi.ConcatenatedCS(
                 [
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.RED, region="foreground"
-                    ),
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.GREEN, region="background"
-                    ),
+                    ansi.Color16CS(ansi.StandardColor.RED, region="foreground"),
+                    ansi.Color16CS(ansi.StandardColor.GREEN, region="background"),
                 ]
             ),
         ),
         (
             "r.g+i",
-            ansi.ConcatenatedSequence(
+            ansi.ConcatenatedCS(
                 [
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.RED, region="foreground"
-                    ),
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.GREEN, region="background"
-                    ),
-                    ansi.GraphicsModeControlSequence(
-                        ansi.GraphicsMode.ITALIC, set=True
-                    ),
+                    ansi.Color16CS(ansi.StandardColor.RED, region="foreground"),
+                    ansi.Color16CS(ansi.StandardColor.GREEN, region="background"),
+                    ansi.GraphicsModeCS(ansi.GraphicsMode.ITALIC, set=True),
                 ]
             ),
         ),
         (
             "r.g-u",
-            ansi.ConcatenatedSequence(
+            ansi.ConcatenatedCS(
                 [
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.RED, region="foreground"
-                    ),
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.GREEN, region="background"
-                    ),
-                    ansi.GraphicsModeControlSequence(
-                        ansi.GraphicsMode.UNDERLINE, set=False
-                    ),
+                    ansi.Color16CS(ansi.StandardColor.RED, region="foreground"),
+                    ansi.Color16CS(ansi.StandardColor.GREEN, region="background"),
+                    ansi.GraphicsModeCS(ansi.GraphicsMode.UNDERLINE, set=False),
                 ]
             ),
         ),
         (
             "r.g+i-u",
-            ansi.ConcatenatedSequence(
+            ansi.ConcatenatedCS(
                 [
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.RED, region="foreground"
-                    ),
-                    ansi.Color16ControlSequence(
-                        ansi.StandardColor.GREEN, region="background"
-                    ),
-                    ansi.GraphicsModeControlSequence(
-                        ansi.GraphicsMode.ITALIC, set=True
-                    ),
-                    ansi.GraphicsModeControlSequence(
-                        ansi.GraphicsMode.UNDERLINE, set=False
-                    ),
+                    ansi.Color16CS(ansi.StandardColor.RED, region="foreground"),
+                    ansi.Color16CS(ansi.StandardColor.GREEN, region="background"),
+                    ansi.GraphicsModeCS(ansi.GraphicsMode.ITALIC, set=True),
+                    ansi.GraphicsModeCS(ansi.GraphicsMode.UNDERLINE, set=False),
                 ]
             ),
         ),

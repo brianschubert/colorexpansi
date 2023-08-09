@@ -56,25 +56,19 @@ def parse_control(spec: str) -> ansi.SGRControlSequence:
     parts = []
 
     if foreground := groups["foreground"]:
-        parts.append(
-            ansi.Color16ControlSequence(_COLOR_IDENTS[foreground], region="foreground")
-        )
+        parts.append(ansi.Color16CS(_COLOR_IDENTS[foreground], region="foreground"))
 
     if background := groups["background"]:
-        parts.append(
-            ansi.Color16ControlSequence(_COLOR_IDENTS[background], region="background")
-        )
+        parts.append(ansi.Color16CS(_COLOR_IDENTS[background], region="background"))
 
     if add_modes := groups["add_modes"]:
         parts.extend(
-            ansi.GraphicsModeControlSequence(_MODE_IDENTS[mode], set=True)
-            for mode in add_modes
+            ansi.GraphicsModeCS(_MODE_IDENTS[mode], set=True) for mode in add_modes
         )
 
     if sub_modes := groups["sub_modes"]:
         parts.extend(
-            ansi.GraphicsModeControlSequence(_MODE_IDENTS[mode], set=False)
-            for mode in sub_modes
+            ansi.GraphicsModeCS(_MODE_IDENTS[mode], set=False) for mode in sub_modes
         )
 
-    return ansi.ConcatenatedSequence(parts)
+    return ansi.ConcatenatedCS(parts)

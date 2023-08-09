@@ -5,10 +5,10 @@ String formatting.
 import string
 from typing import Any, Final
 
-from ._ansi import ResetControlSequence
+from ._ansi import ResetCS
 from ._spec import parse_control
 
-_RESET_SEQ: Final[str] = ResetControlSequence().as_str()
+_RESET_SEQ: Final[str] = ResetCS().as_str()
 
 
 class ColorFormatter(string.Formatter):
