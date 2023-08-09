@@ -11,7 +11,7 @@ from ._spec import parse_control
 _RESET_SEQ: Final[str] = ResetCS().as_str()
 
 
-class ColorFormatter(string.Formatter):
+class ANSIStringFormatter(string.Formatter):
     spec_separator: str
 
     def __init__(self, sep: str = "$") -> None:
